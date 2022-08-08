@@ -20,7 +20,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if err := contactTemplate.Execute(w, nil); err!= nil {
+	if err := contactTemplate.Execute(w, nil); err != nil {
 		panic(err)
 	}
 }
@@ -36,7 +36,7 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<h1>Custom 404 page</h1>")
 }
 
-func main()  {
+func main() {
 	var err error
 	homeTemplate, err = template.ParseFiles("views/home.gohtml", "views/layouts/footer.gohtml")
 	if err != nil {
@@ -46,7 +46,7 @@ func main()  {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	r := mux.NewRouter()
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 	r.HandleFunc("/", home)
