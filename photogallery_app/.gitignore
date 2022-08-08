@@ -56,3 +56,4 @@ builds/**/images/*
 
 # Anything under a tmp folder
 **/tmp/*
+**/exp/*
