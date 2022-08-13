@@ -13,14 +13,14 @@ var contactViews *views.View
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if err := homeViews.Template.Execute(w, nil); err != nil {
+	if err := homeViews.Template.ExecuteTemplate(w, homeViews.Layouts, nil); err != nil {
 		panic(err)
 	}
 }
 
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if err := contactViews.Template.Execute(w, nil); err != nil {
+	if err := contactViews.Template.ExecuteTemplate(w, contactViews.Layouts, nil); err != nil {
 		panic(err)
 	}
 }
@@ -38,8 +38,8 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var err error
-	homeViews = views.NewView("views/home.gohtml")
-	contactViews = views.NewView("views/contact.gohtml")
+	homeViews = views.NewView("bootstrap", "views/home.gohtml")
+	contactViews = views.NewView("bootstrap", "views/contact.gohtml")
 
 	r := mux.NewRouter()
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
