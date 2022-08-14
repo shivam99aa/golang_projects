@@ -9,6 +9,7 @@ type View struct {
 
 func NewView(layout string, files ...string) *View {
 	files = append(files,
+		"views/layouts/navbar.gohtml",
 		"views/layouts/bootstrap.gohtml",
 		"views/layouts/footer.gohtml")
 
