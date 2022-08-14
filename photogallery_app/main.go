@@ -13,16 +13,12 @@ var contactViews *views.View
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if err := homeViews.Template.ExecuteTemplate(w, homeViews.Layouts, nil); err != nil {
-		panic(err)
-	}
+	must(homeViews.Render(w, nil))
 }
 
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	if err := contactViews.Template.ExecuteTemplate(w, contactViews.Layouts, nil); err != nil {
-		panic(err)
-	}
+	must(contactViews.Render(w, nil))
 }
 
 func faq(w http.ResponseWriter, r *http.Request) {
@@ -47,6 +43,12 @@ func main() {
 	r.HandleFunc("/contact", contact)
 	r.HandleFunc("/faq", faq)
 	err = http.ListenAndServe(":3000", r)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func must(err error) {
 	if err != nil {
 		panic(err)
 	}
