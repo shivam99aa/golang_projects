@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"golang_projects/photogallery_app/controllers"
 	"golang_projects/photogallery_app/views"
 	"net/http"
 
@@ -12,7 +13,6 @@ var (
 	homeViews    *views.View
 	contactViews *views.View
 	faqViews     *views.View
-	signUpViews  *views.View
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -30,10 +30,10 @@ func faq(w http.ResponseWriter, r *http.Request) {
 	must(faqViews.Render(w, nil))
 }
 
-func signup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
-	must(signUpViews.Render(w, nil))
-}
+// func signup(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "text/html")
+// 	must(signUpViews.Render(w, nil))
+// }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
@@ -46,13 +46,13 @@ func main() {
 	homeViews = views.NewView("bootstrap", "views/home.gohtml")
 	contactViews = views.NewView("bootstrap", "views/contact.gohtml")
 	faqViews = views.NewView("bootstrap", "views/faq.gohtml")
-	signUpViews = views.NewView("bootstrap", "views/signup.gohtml")
+	usersController := controllers.NewUsers()
 
 	r := mux.NewRouter()
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 	r.HandleFunc("/", home)
 	r.HandleFunc("/contact", contact)
-	r.HandleFunc("/signup", signup)
+	r.HandleFunc("/signup", usersController.New)
 	r.HandleFunc("/faq", faq)
 	err = http.ListenAndServe(":3000", r)
 	if err != nil {
