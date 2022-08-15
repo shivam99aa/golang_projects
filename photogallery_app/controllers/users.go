@@ -28,5 +28,9 @@ func (u *Users) New(w http.ResponseWriter, r *http.Request) {
 // This is used to create a new user account.
 // POST /signup
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		panic(err)
+	}
+	fmt.Println(r.PostForm)
 	fmt.Fprintln(w, "This is a temporary response.")
 }
