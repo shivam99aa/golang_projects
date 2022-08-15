@@ -30,11 +30,6 @@ func faq(w http.ResponseWriter, r *http.Request) {
 	must(faqViews.Render(w, nil))
 }
 
-// func signup(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "text/html")
-// 	must(signUpViews.Render(w, nil))
-// }
-
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusNotFound)
@@ -50,10 +45,13 @@ func main() {
 
 	r := mux.NewRouter()
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
-	r.HandleFunc("/", home)
-	r.HandleFunc("/contact", contact)
-	r.HandleFunc("/signup", usersController.New)
-	r.HandleFunc("/faq", faq)
+
+	r.HandleFunc("/", home).Methods("GET")
+	r.HandleFunc("/contact", contact).Methods("GET")
+	r.HandleFunc("/signup", usersController.New).Methods("GET")
+	r.HandleFunc("/signup", usersController.Create).Methods("POST")
+	r.HandleFunc("/faq", faq).Methods("GET")
+
 	err = http.ListenAndServe(":3000", r)
 	if err != nil {
 		panic(err)
