@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"golang_projects/photogallery_app/views"
 	"net/http"
-
-	"github.com/gorilla/schema"
 )
 
 type Users struct {
@@ -35,14 +33,10 @@ func (u *Users) New(w http.ResponseWriter, r *http.Request) {
 // This is used to create a new user account.
 // POST /signup
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
-		panic(err)
-	}
 	signUpForm := new(SignUpForm)
-	decoder := schema.NewDecoder()
-	if err := decoder.Decode(signUpForm, r.PostForm); err != nil {
+
+	if err := ParseForm(r, signUpForm); err != nil {
 		panic(err)
 	}
-
 	fmt.Fprintln(w, signUpForm)
 }
