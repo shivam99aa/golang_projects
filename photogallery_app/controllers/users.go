@@ -4,10 +4,17 @@ import (
 	"fmt"
 	"golang_projects/photogallery_app/views"
 	"net/http"
+
+	"github.com/gorilla/schema"
 )
 
 type Users struct {
 	NewView *views.View
+}
+
+type SignUpForm struct {
+	Email    string `schema:"email"`
+	Password string `schema:"password"`
 }
 
 func NewUsers() *Users {
@@ -31,6 +38,11 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		panic(err)
 	}
-	fmt.Println(r.PostForm)
-	fmt.Fprintln(w, "This is a temporary response.")
+	signUpForm := new(SignUpForm)
+	decoder := schema.NewDecoder()
+	if err := decoder.Decode(signUpForm, r.PostForm); err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintln(w, signUpForm)
 }
