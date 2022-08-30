@@ -1,16 +1,11 @@
 package models
 
 import (
-	"errors"
+	"golang_projects/photogallery_app/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-)
-
-var (
-	// ErrNotFound is returned when a resource cannot be found in the database.
-	ErrNotFound = errors.New("models: resource not found")
 )
 
 func NewUserService(connectionInfo string) (*UserService, error) {
@@ -48,7 +43,7 @@ func (us *UserService) ByID(id uint) (*User, error) {
 	case nil:
 		return &user, nil
 	case gorm.ErrRecordNotFound:
-		return nil, ErrNotFound
+		return nil, utils.ErrNotFound
 	default:
 		return nil, err
 	}
